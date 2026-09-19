@@ -10,6 +10,7 @@ export const Authentication = () => {
     <Container
       sx={{
         height: '90vh',
+        maxWidth: '600px',
         backgroundColor: appColors.beige,
       }}
     >

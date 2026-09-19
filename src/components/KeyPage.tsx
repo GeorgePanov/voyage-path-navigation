@@ -4,16 +4,29 @@ import {
   Button,
   Divider,
   Skeleton,
+  Snackbar,
   Stack,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
 
 import { useAuth } from '~/app/context';
 
 import { appColors } from '~/shared/colors';
+import { keys } from '~/shared/keys';
 
 export const KeyPage = () => {
   const { isAuthenticated } = useAuth();
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(keys);
+      setIsCopied(true);
+    } catch (error) {
+      console.error('Не удалось скопировать ключ:', error);
+    }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -48,9 +61,7 @@ export const KeyPage = () => {
           Вставить в приложение AmneziaVPN
         </Typography>
 
-        <Typography variant='caption' sx={{ gap: '0.5rem' }}>
-          Ключ обновлён: 19.09.2026
-        </Typography>
+        <Typography variant='caption'>Ключ обновлён: 19.09.2026</Typography>
       </Stack>
 
       <Stack
@@ -62,28 +73,39 @@ export const KeyPage = () => {
         }}
       >
         <Button
-          onClick={() => alert('Я тебя люблю')}
+          onClick={handleCopy}
           variant='contained'
-          sx={{ backgroundColor: appColors.terracotta, color: appColors.beige }}
+          sx={{
+            backgroundColor: appColors.terracotta,
+            color: appColors.beige,
+          }}
         >
           <ContentCopyIcon />
         </Button>
 
-        <Typography variant='body2' sx={{ color: appColors.beige }}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi libero
-          corrupti quis veritatis tempora ad inventore accusantium recusandae
-          dicta aliquam debitis quibusdam officiis fugiat exercitationem maiores
-          natus voluptatem quae, est maxime? Magni, deserunt eos debitis officia
-          harum vel possimus nostrum facilis consectetur cum fugit dolores
-          distinctio voluptatem optio aut quia eveniet, voluptates iste expedita
-          beatae atque saepe reprehenderit? Incidunt ipsum ducimus quasi
-          consequuntur repellat minima! Eaque numquam alias accusamus eveniet
-          laborum dolorum officia praesentium, dignissimos incidunt recusandae
-          aperiam nihil quaerat sunt quasi illum perferendis dolor deleniti.
-          Dolore adipisci illo in minima, est quae animi. Officia cumque magni
-          quis sapiente quidem?
+        <Typography
+          variant='body2'
+          sx={{ color: appColors.beige, overflowWrap: 'anywhere' }}
+        >
+          {keys}
         </Typography>
       </Stack>
+
+      <Snackbar
+        open={isCopied}
+        autoHideDuration={5000}
+        message='Ключ скопирован'
+        onClose={() => setIsCopied(false)}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        slotProps={{
+          content: {
+            sx: {
+              backgroundColor: appColors.maroon,
+              color: appColors.beige,
+            },
+          },
+        }}
+      />
     </Box>
   );
 };
