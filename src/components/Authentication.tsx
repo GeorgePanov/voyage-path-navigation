@@ -9,7 +9,7 @@ export const Authentication = () => {
   return (
     <Container
       sx={{
-        height: '100vh',
+        height: '90vh',
         backgroundColor: appColors.green,
       }}
     >
