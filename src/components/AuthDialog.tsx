@@ -38,7 +38,7 @@ export const AuthDialog: FC = () => {
         }}
       >
         <Typography variant='h5'>Авторизация</Typography>
-        <Typography variant='body1'>Введите дату рождения</Typography>
+        <Typography variant='body1'>Введите свой день рождения</Typography>
 
         <TextField
           fullWidth
