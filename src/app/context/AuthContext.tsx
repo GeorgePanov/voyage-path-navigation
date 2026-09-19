@@ -32,9 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const handleEnterPassword = (password: string) => {
-    const isCorrect = usersDateOfBirth.some(
-      (user) => user.dateOfBirth === password,
-    );
+    const isCorrect = usersDateOfBirth.includes(password);
 
     if (isCorrect) {
       localStorage.setItem(AUTH_KEY, Date.now().toString());
