@@ -1,5 +1,11 @@
-import type { FC } from 'react';
+import { Authentication } from '~/components/Authentication';
 
-export const App: FC = () => {
-  return <>App</>;
+import { AuthProvider } from './context';
+
+export const App = () => {
+  return (
+    <AuthProvider>
+      <Authentication />
+    </AuthProvider>
+  );
 };
