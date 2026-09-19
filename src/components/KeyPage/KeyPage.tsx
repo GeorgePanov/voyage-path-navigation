@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Divider,
-  Skeleton,
   Snackbar,
   Stack,
   Typography,
@@ -14,6 +13,8 @@ import { useAuth } from '~/app/context';
 
 import { appColors } from '~/shared/colors';
 import { keys } from '~/shared/keys';
+
+import { KeyPageSkeleton } from './KeyPage.skeleton';
 
 export const KeyPage = () => {
   const { isAuthenticated } = useAuth();
@@ -29,12 +30,7 @@ export const KeyPage = () => {
   };
 
   if (!isAuthenticated) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Skeleton variant='text' width={300} height={50} />
-        <Skeleton variant='rounded' width='100%' height={200} />
-      </Box>
-    );
+    return <KeyPageSkeleton />;
   }
 
   return (
