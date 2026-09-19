@@ -1,5 +1,12 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import { useAuth } from '~/app/context';
 
@@ -24,22 +31,26 @@ export const KeyPage = () => {
         flexDirection: 'column',
         m: 3,
         gap: '2rem',
-        color: appColors.beige,
+        color: appColors.sage,
       }}
     >
-      <Typography
-        sx={{ color: appColors.orange, fontWeight: 'bold' }}
-        variant='h3'
-      >
-        VPN KEY
-      </Typography>
+      <Divider>
+        <Typography
+          sx={{ color: appColors.maroon, fontWeight: 'bold' }}
+          variant='h3'
+        >
+          VPN KEY
+        </Typography>
+      </Divider>
 
-      <Stack sx={{ gap: '0.5rem' }}>
+      <Stack>
         <Typography variant='body1'>
-          Нужно вставить в приложение AmneziaVPN
+          Вставить в приложение AmneziaVPN
         </Typography>
 
-        <Typography variant='caption'>Ключ обновлён: 19.09.2026</Typography>
+        <Typography variant='caption' sx={{ gap: '0.5rem' }}>
+          Ключ обновлён: 19.09.2026
+        </Typography>
       </Stack>
 
       <Stack
@@ -51,13 +62,14 @@ export const KeyPage = () => {
         }}
       >
         <Button
+          onClick={() => alert('Я тебя люблю')}
           variant='contained'
-          sx={{ backgroundColor: appColors.orange, color: appColors.beige }}
+          sx={{ backgroundColor: appColors.terracotta, color: appColors.beige }}
         >
           <ContentCopyIcon />
         </Button>
 
-        <Typography variant='body2'>
+        <Typography variant='body2' sx={{ color: appColors.beige }}>
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi libero
           corrupti quis veritatis tempora ad inventore accusantium recusandae
           dicta aliquam debitis quibusdam officiis fugiat exercitationem maiores

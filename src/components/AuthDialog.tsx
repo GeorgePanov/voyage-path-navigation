@@ -34,6 +34,7 @@ export const AuthDialog: FC = () => {
           padding: '2rem',
           width: '15rem',
           gap: '1rem',
+          backgroundColor: appColors.beige,
         }}
       >
         <Typography variant='h5'>Авторизация</Typography>
@@ -50,7 +51,7 @@ export const AuthDialog: FC = () => {
           }}
 
           error={error}
-          helperText={error ? 'Неверный пароль' : ''}
+          helperText={error ? 'Неверно' : ''}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               handleSubmit();

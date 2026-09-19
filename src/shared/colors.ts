@@ -1,6 +1,6 @@
 export const appColors = {
-  sage: '#40513B',
-  green: '#628141',
-  beige: '#E5D9B6',
-  orange: '#E67E22',
+  sage: '#607456',
+  beige: '#eee0cc',
+  terracotta: '#ba6a4c',
+  maroon: '#7b2525',
 };
