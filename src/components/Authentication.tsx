@@ -1,14 +1,17 @@
 import {
   Button,
+  Container,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogTitle,
+  Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 
 import { useAuth } from '~/app/context';
+
+import { appColors } from '~/shared/colors';
 
 import { KeyPage } from './KeyPage';
 
@@ -30,28 +33,35 @@ export const Authentication = () => {
   };
 
   return (
-    <>
+    <Container
+      sx={{
+        height: '100vh',
+        backgroundColor: appColors.green,
+      }}
+    >
       <KeyPage />
 
-      <Dialog
-        open={!isAuthenticated}
-        onClose={() => {}}
-        // disableEscapeKeyDown
-        //
-      >
-        <DialogTitle>Авторизация</DialogTitle>
+      <Dialog open={!isAuthenticated} onClose={() => {}}>
+        <Stack
+          sx={{
+            padding: '2rem',
+            width: '15rem',
+            gap: '1rem',
+          }}
+        >
+          <Typography variant='h5'>Авторизация</Typography>
+          <Typography variant='body1'>Введите дату рождения</Typography>
 
-        <DialogContent>
           <TextField
-            autoFocus
             fullWidth
-            type='password'
-            label='Пароль'
+            type='date'
+            variant='outlined'
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
               setError(false);
             }}
+
             error={error}
             helperText={error ? 'Неверный пароль' : ''}
             onKeyDown={(event) => {
@@ -60,14 +70,22 @@ export const Authentication = () => {
               }
             }}
           />
-        </DialogContent>
 
-        <DialogActions>
-          <Button onClick={handleSubmit} variant='contained'>
-            Войти
-          </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button
+              onClick={handleSubmit}
+              variant='contained'
+              sx={{ backgroundColor: appColors.sage }}
+            >
+              Войти
+            </Button>
+          </DialogActions>
+
+          <Stack sx={{ alignItems: 'flex-end' }}>
+            <Typography variant='body2'>by George Panov</Typography>
+          </Stack>
+        </Stack>
       </Dialog>
-    </>
+    </Container>
   );
 };
