@@ -25,8 +25,6 @@ export const AuthDialog: FC = () => {
       setError(true);
       return;
     }
-
-    setError(false);
   };
 
   return (

@@ -3,6 +3,8 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 
 import { usersDateOfBirth } from '~/shared/users';
 
+const AUTH_KEY = 'authTimeStamp';
+
 type AuthContextType = {
   isAuthenticated: boolean;
   handleEnterPassword: (password: string) => boolean;
@@ -11,7 +13,23 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const savedTime = localStorage.getItem(AUTH_KEY);
+
+    if (!savedTime) {
+      return false;
+    }
+
+    // Через час очищать
+    const isOneDayPassed = Date.now() - Number(savedTime) >= 60 * 60 * 1000;
+
+    if (isOneDayPassed) {
+      localStorage.removeItem(AUTH_KEY);
+      return false;
+    }
+
+    return true;
+  });
 
   const handleEnterPassword = (password: string) => {
     const isCorrect = usersDateOfBirth.some(
@@ -19,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (isCorrect) {
+      localStorage.setItem(AUTH_KEY, Date.now().toString());
       setIsAuthenticated(true);
     }
 
