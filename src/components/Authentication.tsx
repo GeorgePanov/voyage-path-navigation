@@ -1,37 +1,11 @@
-import {
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { useState } from 'react';
-
-import { useAuth } from '~/app/context';
+import { Container } from '@mui/material';
 
 import { appColors } from '~/shared/colors';
 
+import { AuthDialog } from './AuthDialog';
 import { KeyPage } from './KeyPage';
 
 export const Authentication = () => {
-  const { isAuthenticated, handleEnterPassword } = useAuth();
-
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-
-  const handleSubmit = () => {
-    const success = handleEnterPassword(password);
-
-    if (!success) {
-      setError(true);
-      return;
-    }
-
-    setError(false);
-  };
-
   return (
     <Container
       sx={{
@@ -41,51 +15,7 @@ export const Authentication = () => {
     >
       <KeyPage />
 
-      <Dialog open={!isAuthenticated} onClose={() => {}}>
-        <Stack
-          sx={{
-            padding: '2rem',
-            width: '15rem',
-            gap: '1rem',
-          }}
-        >
-          <Typography variant='h5'>Авторизация</Typography>
-          <Typography variant='body1'>Введите дату рождения</Typography>
-
-          <TextField
-            fullWidth
-            type='date'
-            variant='outlined'
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-              setError(false);
-            }}
-
-            error={error}
-            helperText={error ? 'Неверный пароль' : ''}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                handleSubmit();
-              }
-            }}
-          />
-
-          <DialogActions>
-            <Button
-              onClick={handleSubmit}
-              variant='contained'
-              sx={{ backgroundColor: appColors.sage }}
-            >
-              Войти
-            </Button>
-          </DialogActions>
-
-          <Stack sx={{ alignItems: 'flex-end' }}>
-            <Typography variant='body2'>by George Panov</Typography>
-          </Stack>
-        </Stack>
-      </Dialog>
+      <AuthDialog />
     </Container>
   );
 };
