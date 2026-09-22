@@ -12,17 +12,19 @@ import { useState } from 'react';
 import { useAuth } from '~/app/context';
 
 import { appColors } from '~/shared/colors';
-import { keys } from '~/shared/keys';
+import { keyUpdateDate } from '~/shared/users';
 
 import { KeyPageSkeleton } from './KeyPage.skeleton';
 
 export const KeyPage = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(keys);
+      await navigator.clipboard.writeText(
+        user?.key ?? 'Не удалось скопировать ключ',
+      );
       setIsCopied(true);
     } catch (error) {
       console.error('Не удалось скопировать ключ:', error);
@@ -57,7 +59,9 @@ export const KeyPage = () => {
           Вставить в приложение AmneziaVPN
         </Typography>
 
-        <Typography variant='caption'>Ключ обновлён: 19.09.2026</Typography>
+        <Typography variant='caption'>
+          Ключ обновлён: <b>{keyUpdateDate}</b>
+        </Typography>
       </Stack>
 
       <Stack
@@ -83,7 +87,7 @@ export const KeyPage = () => {
           variant='body2'
           sx={{ color: appColors.beige, overflowWrap: 'anywhere' }}
         >
-          {keys}
+          {user?.key ?? 'Произошла ошибка при получении ключа'}
         </Typography>
       </Stack>
 
