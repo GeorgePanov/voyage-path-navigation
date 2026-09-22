@@ -1,49 +1,89 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
-import { usersDateOfBirth } from '~/shared/users';
+import { users } from '~/shared/users';
 
-const AUTH_KEY = 'authTimeStamp';
+const AUTH_KEY = 'authData';
+const AUTH_DURATION = 60 * 60 * 1000; // 1 час
+
+type User = (typeof users)[number];
+
+type AuthData = {
+  timestamp: number;
+  userId: User['userId'];
+};
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  user: User | null;
   handleEnterPassword: (password: string) => boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+const getSavedUser = (): User | null => {
+  const savedAuth = localStorage.getItem(AUTH_KEY);
+
+  if (!savedAuth) {
+    return null;
+  }
+
+  try {
+    const { timestamp, userId }: AuthData = JSON.parse(savedAuth);
+
+    const isExpired = Date.now() - timestamp >= AUTH_DURATION;
+
+    if (isExpired) {
+      localStorage.clear();
+      return null;
+    }
+
+    const user = users.find((user) => user.userId === userId);
+
+    if (!user) {
+      localStorage.clear();
+      return null;
+    }
+
+    return user;
+  } catch {
+    localStorage.clear();
+    return null;
+  }
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    const savedTime = localStorage.getItem(AUTH_KEY);
+  const [user, setUser] = useState<User | null>(getSavedUser);
 
-    if (!savedTime) {
-      return false;
-    }
-
-    // Через час очищать
-    const isOneDayPassed = Date.now() - Number(savedTime) >= 60 * 60 * 1000;
-
-    if (isOneDayPassed) {
-      localStorage.removeItem(AUTH_KEY);
-      return false;
-    }
-
-    return true;
-  });
+  const isAuthenticated = user !== null;
 
   const handleEnterPassword = (password: string) => {
-    const isCorrect = usersDateOfBirth.includes(password);
+    const foundUser = users.find((user) => user.dateOfBirth === password);
 
-    if (isCorrect) {
-      localStorage.setItem(AUTH_KEY, Date.now().toString());
-      setIsAuthenticated(true);
+    if (!foundUser) {
+      return false;
     }
 
-    return isCorrect;
+    const authData: AuthData = {
+      timestamp: Date.now(),
+      userId: foundUser.userId,
+    };
+
+    localStorage.setItem(AUTH_KEY, JSON.stringify(authData));
+
+    setUser(foundUser);
+
+    return true;
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, handleEnterPassword }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        handleEnterPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
