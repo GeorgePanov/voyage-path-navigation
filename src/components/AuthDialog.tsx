@@ -6,11 +6,27 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
-import { useState, type FC } from 'react';
+import { forwardRef, useState, type FC } from 'react';
+import { IMaskInput } from 'react-imask';
 
 import { useAuth } from '~/app/context';
 
 import { appColors } from '~/shared/colors';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const DateMaskInput = forwardRef<HTMLInputElement, any>((props, ref) => {
+  const { onChange, ...other } = props;
+
+  return (
+    <IMaskInput
+      {...other}
+      inputRef={ref}
+      mask='00.00.0000'
+      inputMode='numeric'
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+    />
+  );
+});
 
 export const AuthDialog: FC = () => {
   const { isAuthenticated, handleEnterPassword } = useAuth();
@@ -19,7 +35,10 @@ export const AuthDialog: FC = () => {
   const [error, setError] = useState(false);
 
   const handleSubmit = () => {
-    const success = handleEnterPassword(password);
+    const [day, month, year] = password.split('.');
+    const formattedPassword = `${year}-${month}-${day}`;
+
+    const success = handleEnterPassword(formattedPassword);
 
     if (!success) {
       setError(true);
@@ -42,7 +61,7 @@ export const AuthDialog: FC = () => {
 
         <TextField
           fullWidth
-          type='date'
+          placeholder='ДД.ММ.ГГГГ'
           variant='outlined'
           value={password}
           onChange={(event) => {
@@ -56,6 +75,12 @@ export const AuthDialog: FC = () => {
             if (event.key === 'Enter') {
               handleSubmit();
             }
+          }}
+
+          slotProps={{
+            input: {
+              inputComponent: DateMaskInput,
+            },
           }}
         />
 
