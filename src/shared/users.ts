@@ -1,4 +1,4 @@
-export const keyUpdateDate = '22.09.2026';
+export const keyUpdateDate = '30.10.2026';
 
 export const users = [
   // Ours
