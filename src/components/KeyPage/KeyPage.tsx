@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { useAuth } from '~/app/context';
+import { useAuth } from '~/app/store';
 
 import { appColors } from '~/shared/colors';
 import { keyUpdateDate } from '~/shared/users';

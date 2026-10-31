@@ -9,7 +9,7 @@ import {
 import { forwardRef, useState, type FC } from 'react';
 import { IMaskInput } from 'react-imask';
 
-import { useAuth } from '~/app/context';
+import { useAuth } from '~/app/store';
 
 import { appColors } from '~/shared/colors';
 
