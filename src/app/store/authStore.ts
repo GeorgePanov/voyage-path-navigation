@@ -1,5 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { create } from 'zustand';
 
 import { users } from '~/shared/users';
 
@@ -13,13 +12,11 @@ type AuthData = {
   userId: User['userId'];
 };
 
-type AuthContextType = {
+type AuthState = {
   isAuthenticated: boolean;
   user: User | null;
   handleEnterPassword: (password: string) => boolean;
 };
-
-const AuthContext = createContext<AuthContextType | null>(null);
 
 const getSavedUser = (): User | null => {
   const savedAuth = localStorage.getItem(AUTH_KEY);
@@ -52,12 +49,12 @@ const getSavedUser = (): User | null => {
   }
 };
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(getSavedUser);
+const savedUser = getSavedUser();
 
-  const isAuthenticated = user !== null;
-
-  const handleEnterPassword = (password: string) => {
+export const useAuth = create<AuthState>((set) => ({
+  user: savedUser,
+  isAuthenticated: savedUser !== null,
+  handleEnterPassword: (password) => {
     const foundUser = users.find((user) => user.dateOfBirth === password);
 
     if (!foundUser) {
@@ -71,30 +68,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     localStorage.setItem(AUTH_KEY, JSON.stringify(authData));
 
-    setUser(foundUser);
+    set({
+      isAuthenticated: true,
+      user: foundUser,
+    });
 
     return true;
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        handleEnterPassword,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('useAuth must be used inside AuthProvider');
-  }
-
-  return context;
-};
+  },
+}));

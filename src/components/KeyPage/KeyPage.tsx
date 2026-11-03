@@ -3,13 +3,14 @@ import {
   Box,
   Button,
   Divider,
+  Link,
   Snackbar,
   Stack,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
 
-import { useAuth } from '~/app/context';
+import { useAuth } from '~/app/store';
 
 import { appColors } from '~/shared/colors';
 import { keyUpdateDate } from '~/shared/users';
@@ -56,12 +57,18 @@ export const KeyPage = () => {
 
       <Stack>
         <Typography variant='body1'>
-          Вставить в приложение AmneziaVPN
+          Скопируйте ключ и вставьте его в приложение Happ/ENCY
         </Typography>
 
         <Typography variant='caption'>
           Ключ обновлён: <b>{keyUpdateDate}</b>
         </Typography>
+
+        {user?.key && (
+          <Link href={user.key} variant='caption' target='_blank'>
+            Посмотреть инструкцию
+          </Link>
+        )}
       </Stack>
 
       <Stack
