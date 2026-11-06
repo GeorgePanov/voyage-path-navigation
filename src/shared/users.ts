@@ -68,16 +68,16 @@ export const users = [
   },
 
   // S
-  // {
-  //   userId: 'user_301',
-  //   dateOfBirth: '2002-06-28',
-  //   key: '',
-  // },
-  // {
-  //   userId: 'user_302',
-  //   dateOfBirth: '2005-10-15',
-  //   key: '',
-  // },
+  {
+    userId: 'user_301',
+    dateOfBirth: '2002-06-28',
+    key: 'https://s-25383.fi7.h1clayd.click/sub/2991d763-8751-4b84-8291-2d3c9408e766',
+  },
+  {
+    userId: 'user_302',
+    dateOfBirth: '2005-10-15',
+    key: 'https://s-25383.fi7.h1clayd.click/sub/2991d763-8751-4b84-8291-2d3c9408e766',
+  },
 
   // Others
   {
